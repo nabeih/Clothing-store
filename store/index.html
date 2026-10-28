@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>متجر الأناقة للملابس | قسم الرجالي والتشكيلات الفاخرة</title>
+    
+    <!-- خط Cairo العربي الفاخر -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة الأيقونات FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- ملف التنسيق العصري للمتجر -->
+    <link rel="stylesheet" href="css/store.css">
+</head>
+<body>
+
+    <!-- ============================================
+         1. الشريط الإعلاني العلوي (Announcement Bar)
+         ============================================ -->
+    <div class="announcement-bar">
+        <i class="fas fa-truck-fast"></i>
+        <span>خدمة التوصيل مجاناً للطلبات فوق 150 ₪ لجميع المناطق خلال (24-48) ساعة</span>
+    </div>
+
+    <!-- ============================================
+         2. الهيدر وشريط التنقل الرئيسي (Site Header)
+         ============================================ -->
+    <header class="site-header">
+        <div class="header-container">
+            
+            <!-- القائمة الرئيسية (اليمين) -->
+            <nav class="main-nav">
+                <a href="javascript:void(0)" class="nav-link" onclick="setCategory('الكل', this)">الصفحة الرئيسية</a>
+                <div class="nav-item-dropdown">
+                    <a href="javascript:void(0)" class="nav-link" onclick="setCategory('ستاتي', this)">
+                        <span>ستاتي</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('ستاتي', this)">معاطف وجواكيت</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('ستاتي', this)">أطقم شتوية</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('ستاتي', this)">فساتين وتنانير</a>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="nav-link active" onclick="setCategory('رجالي', this)">رجالي</a>
+                <div class="nav-item-dropdown">
+                    <a href="javascript:void(0)" class="nav-link" onclick="setCategory('أطفال', this)">
+                        <span>أطفال</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('أطفال', this)">أولادي</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('أطفال', this)">بناتي</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="setCategory('أطفال', this)">مواليد وحديثي الولادة</a>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="nav-link" onclick="setCategory('أحذية', this)">أحذية</a>
+            </nav>
+
+            <!-- زر القائمة للهاتف المحمول -->
+            <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu(true)" title="القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- شعار المتجر بالهوية البصرية (الوسط) -->
+            <a href="javascript:void(0)" class="brand-logo-center" onclick="setCategory('رجالي')">
+                <span class="brand-title">الأناقة<span class="accent-text">.</span></span>
+                <span class="brand-subtitle">EL-ANAQA STORE</span>
+            </a>
+
+            <!-- الإجراءات وأيقونات السلة والبحث (اليسار) -->
+            <div class="header-actions">
+                <!-- شريط بحث فوري -->
+                <div style="position:relative;display:flex;align-items:center;">
+                    <input type="text" id="storeSearchInput" placeholder="ابحث بالاسم أو الموديل..." oninput="handleSearchInput(this.value)"
+                           style="padding:6px 30px 6px 12px;border:1.5px solid #e2e8f0;border-radius:20px;font-family:inherit;font-size:0.8rem;outline:none;width:170px;transition:width 0.3s;"
+                           onfocus="this.style.width='220px';this.style.borderColor='var(--brand-accent)';"
+                           onblur="if(!this.value){this.style.width='170px';this.style.borderColor='#e2e8f0';}">
+                    <i class="fas fa-search" style="position:absolute;right:10px;color:#94a3b8;font-size:0.8rem;pointer-events:none;"></i>
+                </div>
+
+                <!-- المفضلة -->
+                <button type="button" class="header-icon-btn" onclick="openWishlistModal()" title="المفضلة">
+                    <i class="far fa-heart"></i>
+                    <span class="header-badge wishlist-count-badge" style="display:none;">0</span>
+                </button>
+
+                <!-- سلة المشتريات -->
+                <button type="button" class="header-icon-btn" onclick="openCartDrawer()" title="سلة التسوق">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="header-badge cart-count-badge" style="display:none;">0</span>
+                </button>
+
+                <!-- حساب الزبون والإشعارات -->
+                <div id="customerHeaderAccountBox" style="display:inline-flex;align-items:center;gap:6px;">
+                    <!-- يتم تحديثه تلقائياً عبر JS -->
+                </div>
+
+                <!-- زر خدمة العملاء والتواصل المباشر عبر الواتساب للزبائن -->
+                <a href="https://wa.me/970599887766" class="header-icon-btn" title="خدمة العملاء والواتساب" target="_blank" style="font-size:1.15rem;color:#25d366;">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- قائمة الموبايل المنزلقة -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f1f5f9;padding-bottom:14px;">
+            <strong style="font-size:1.1rem;color:#0f172a;">قائمة المتجر</strong>
+            <button type="button" onclick="toggleMobileMenu(false)" style="border:none;background:none;font-size:1.3rem;cursor:pointer;color:#64748b;">&times;</button>
+        </div>
+        
+        <!-- حساب الزبون بالموبايل -->
+        <div id="mobileCustomerAccountBox" style="padding:10px 0;border-bottom:1px solid #f1f5f9;">
+            <!-- يتم تحديثه تلقائياً عبر JS -->
+        </div>
+
+        <a href="javascript:void(0)" class="mobile-nav-link" onclick="setCategory('الكل', this)">الصفحة الرئيسية</a>
+        <a href="javascript:void(0)" class="mobile-nav-link active" onclick="setCategory('رجالي', this)">قسم الرجالي</a>
+        <a href="javascript:void(0)" class="mobile-nav-link" onclick="setCategory('ستاتي', this)">قسم الستاتي</a>
+        <a href="javascript:void(0)" class="mobile-nav-link" onclick="setCategory('أطفال', this)">قسم الأطفال</a>
+        <a href="javascript:void(0)" class="mobile-nav-link" onclick="setCategory('أحذية', this)">أحذية وإكسسوارات</a>
+        <div style="margin-top:auto;padding-top:20px;border-top:1px solid #f1f5f9;font-size:0.85rem;color:#64748b;">
+            <div>خدمة العملاء والواتساب:</div>
+            <strong style="color:#0f172a;direction:ltr;display:block;margin-top:4px;">+970 599 887766</strong>
+        </div>
+    </div>
+
+    <!-- ============================================
+         3. عنوان القسم والهيرو (Category Title Hero)
+         ============================================ -->
+    <section class="category-hero">
+        <div class="category-breadcrumbs">
+            <a href="javascript:void(0)" onclick="setCategory('الكل')">الرئيسية</a> / 
+            <span>المتجر</span> / 
+            <strong id="breadcrumbCategory" style="color:var(--text-main);">قسم الرجالي</strong>
+        </div>
+        <h1 class="category-main-title" id="categoryMainTitle">قسم الرجالي</h1>
+        <p class="category-desc">أحدث صيحات الموضة والأطقم الشتوية والرياضية الفاخرة بأعلى معايير الجودة والأناقة</p>
+    </section>
+
+    <!-- ============================================
+         4. شريط الفلاتر والفرز (Filters & Sorting Bar)
+         ============================================ -->
+    <section class="store-toolbar">
+        
+        <!-- اليمين: فلاتر المقاسات والألوان -->
+        <div class="toolbar-right">
+            <!-- فلتر المقاسات -->
+            <div class="filter-btn-group">
+                <button type="button" class="filter-pill-btn" onclick="toggleFilterPopover('sizesPopover')">
+                    <span id="sizeFilterBtnText">المقاسات</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filter-popover" id="sizesPopover">
+                    <div style="font-size:0.8rem;font-weight:800;color:#0f172a;margin-bottom:8px;">اختر المقاسات المطلوبة:</div>
+                    <div class="filter-grid-chips">
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('S', this)">S</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('M', this)">M</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('L', this)">L</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('XL', this)">XL</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('XXL', this)">XXL</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('38', this)">38</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('39', this)">39</button>
+                        <button type="button" class="chip-option" onclick="toggleSizeFilter('40', this)">40</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- فلتر اللون -->
+            <div class="filter-btn-group">
+                <button type="button" class="filter-pill-btn" onclick="toggleFilterPopover('colorsPopover')">
+                    <span id="colorFilterBtnText">اللون</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filter-popover" id="colorsPopover">
+                    <div style="font-size:0.8rem;font-weight:800;color:#0f172a;margin-bottom:8px;">اختر الألوان:</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <div class="color-chip-option" onclick="toggleColorFilter('أسود', this)">
+                            <span class="color-dot" style="background:#000;"></span> أسود
+                        </div>
+                        <div class="color-chip-option" onclick="toggleColorFilter('نبيذي / أحمر', this)">
+                            <span class="color-dot" style="background:#881337;"></span> نبيذي / أحمر
+                        </div>
+                        <div class="color-chip-option" onclick="toggleColorFilter('رمادي', this)">
+                            <span class="color-dot" style="background:#94a3b8;"></span> رمادي
+                        </div>
+                        <div class="color-chip-option" onclick="toggleColorFilter('كحلي', this)">
+                            <span class="color-dot" style="background:#1e3a8a;"></span> كحلي
+                        </div>
+                        <div class="color-chip-option" onclick="toggleColorFilter('زيتي', this)">
+                            <span class="color-dot" style="background:#365314;"></span> زيتي
+                        </div>
+                        <div class="color-chip-option" onclick="toggleColorFilter('بيج', this)">
+                            <span class="color-dot" style="background:#d6d3d1;"></span> بيج
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- زر مسح الفلاتر السريع -->
+            <button type="button" class="filter-pill-btn" onclick="resetFilters()" style="color:#64748b;font-weight:600;" title="إلغاء جميع الفلاتر">
+                <i class="fas fa-rotate-left"></i> مسح الفلاتر
+            </button>
+        </div>
+
+        <!-- الوسط: عدد النتائج -->
+        <div class="toolbar-center">
+            <span id="productsCountDisplay">عرض النتائج...</span>
+        </div>
+
+        <!-- اليسار: الترتيب والفرز -->
+        <div class="toolbar-left">
+            <span style="font-size:0.85rem;color:#64748b;font-weight:700;">الترتيب حسب:</span>
+            <div class="sort-select-wrapper">
+                <select class="sort-select" onchange="handleSortChange(this.value)">
+                    <option value="high-to-low" selected>السعر من الأعلى إلى الأقل</option>
+                    <option value="low-to-high">السعر من الأقل إلى الأعلى</option>
+                    <option value="newest">وصل حديثاً (الأحدث)</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         5. شبكة بطاقات المنتجات (Products Catalog Grid)
+         ============================================ -->
+    <main class="products-section">
+        <div class="products-grid-catalog" id="productsGrid">
+            <!-- يتم تعبئة البطاقات ديناميكياً بواسطة store.js -->
+        </div>
+    </main>
+
+    <!-- ============================================
+         6. درج السلة الجانبي (Slide-over Cart Drawer)
+         ============================================ -->
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="if(event.target === this) closeCartDrawer()">
+        <div class="cart-drawer">
+            <div class="cart-drawer-header">
+                <div class="cart-drawer-title">
+                    <i class="fas fa-shopping-bag text-primary"></i>
+                    <span>سلة المشتريات</span>
+                </div>
+                <button type="button" class="btn-drawer-close" onclick="closeCartDrawer()">&times;</button>
+            </div>
+
+            <!-- قائمة عناصر السلة -->
+            <div class="cart-drawer-items" id="cartDrawerItems">
+                <!-- ديناميكي -->
+            </div>
+
+            <!-- أسفل السلة ومجموع الحساب -->
+            <div class="cart-drawer-footer">
+                <div class="cart-summary-row">
+                    <span>المجموع الجزئي:</span>
+                    <strong id="cartDrawerSubtotal">₪0.00</strong>
+                </div>
+                <div class="cart-summary-row">
+                    <span>تكلفة التوصيل:</span>
+                    <strong style="color:#16a34a;">مجاناً (لجميع المناطق)</strong>
+                </div>
+                <div class="cart-summary-row total-row">
+                    <span>الإجمالي النهائي:</span>
+                    <strong id="cartDrawerTotal" style="color:var(--brand-accent);">₪0.00</strong>
+                </div>
+
+                <button type="button" class="btn-checkout-drawer" onclick="openCheckoutModal()">
+                    <i class="fas fa-credit-card"></i> متابعة الطلب والتسليم
+                </button>
+                <button type="button" class="btn-whatsapp-drawer" onclick="openCheckoutModal()">
+                    <i class="fab fa-whatsapp"></i> طلب فوري عبر واتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         7. نافذة إتمام الطلب (Checkout Modal)
+         ============================================ -->
+    <div class="store-modal-overlay" id="checkoutModal">
+        <div class="store-modal-card">
+            <div class="store-modal-header">
+                <h3><i class="fas fa-shield-alt text-primary"></i> إتمام وتأكيد الطلب</h3>
+                <button type="button" class="btn-drawer-close" onclick="closeModal('checkoutModal')">&times;</button>
+            </div>
+            <div class="store-modal-body">
+                <form onsubmit="submitOnlineOrder(event)">
+                    <!-- ملخص الطلب المصغر -->
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:16px;">
+                        <div style="font-size:0.8rem;font-weight:800;color:#0f172a;margin-bottom:6px;">ملخص الأصناف المطلوبة:</div>
+                        <div id="checkoutOrderSummaryList" style="max-height:110px;overflow-y:auto;"></div>
+                        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px dashed #cbd5e1;margin-top:8px;font-weight:900;">
+                            <span>الإجمالي المستحق:</span>
+                            <span id="checkoutTotalAmount" style="color:var(--brand-accent);font-size:1.15rem;">₪0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="checkout-form-grid">
+                        <div class="form-field-group">
+                            <label>الاسم الكامل *</label>
+                            <input type="text" id="custOrderName" placeholder="مثال: أحمد محمد" required>
+                        </div>
+                        <div class="form-field-group">
+                            <label>رقم الهاتف (واتساب) *</label>
+                            <input type="tel" id="custOrderPhone" placeholder="059xxxxxxx" style="direction:ltr;text-align:right;" required>
+                        </div>
+                        <div class="form-field-group">
+                            <label>المدينة / المحافظة *</label>
+                            <input type="text" id="custOrderCity" placeholder="مثال: رام الله / نابلس / غزة / الخليل" required>
+                        </div>
+                        <div class="form-field-group">
+                            <label>العنوان بالتفصيل (الشارع / معلم بارز) *</label>
+                            <input type="text" id="custOrderAddress" placeholder="الشارع، رقم العمارة، بجانب..." required>
+                        </div>
+                        <div class="form-field-group full-span">
+                            <label>طريقة الدفع المفضلة *</label>
+                            <select id="custOrderPaymentMethod">
+                                <option value="cod">💵 الدفع نقدياً عند الاستلام (COD)</option>
+                                <option value="palpay">📱 محفظة PalPay / جوال باي</option>
+                                <option value="bank">🏛️ تحويل لحساب بنك فلسطين</option>
+                            </select>
+                        </div>
+                        <div class="form-field-group full-span">
+                            <label>ملاحظات إضافية للتوصيل (اختياري)</label>
+                            <textarea id="custOrderNotes" rows="2" placeholder="أي تفاصيل خاصة بتسليم الشحنة..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:10px;margin-top:20px;">
+                        <button type="submit" class="btn-checkout-drawer" style="flex:1;margin:0;padding:12px;">
+                            <i class="fas fa-check-circle"></i> تأكيد الطلب فوراً
+                        </button>
+                        <button type="button" class="btn-pill" onclick="closeModal('checkoutModal')" style="padding:12px 18px;border:1.5px solid #cbd5e1;background:#fff;border-radius:10px;cursor:pointer;font-family:inherit;">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         8. نافذة المعاينة السريعة (Quick View Modal)
+         ============================================ -->
+    <div class="store-modal-overlay" id="quickViewModal">
+        <div class="store-modal-card" style="max-width:780px;">
+            <div class="store-modal-header" style="border:none;padding-bottom:0;">
+                <div></div>
+                <button type="button" class="btn-drawer-close" onclick="closeModal('quickViewModal')">&times;</button>
+            </div>
+            <div class="store-modal-body" id="quickViewContent" style="padding-top:6px;">
+                <!-- ديناميكي -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         9. نافذة المفضلة (Wishlist Modal)
+         ============================================ -->
+    <div class="store-modal-overlay" id="wishlistModal">
+        <div class="store-modal-card" style="max-width:520px;">
+            <div class="store-modal-header">
+                <h3><i class="fas fa-heart text-danger"></i> قائمة المفضلة</h3>
+                <button type="button" class="btn-drawer-close" onclick="closeModal('wishlistModal')">&times;</button>
+            </div>
+            <div class="store-modal-body" id="wishlistModalBody">
+                <!-- ديناميكي -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         10. نافذة تأكيد نجاح الطلب (Order Success Modal)
+         ============================================ -->
+    <div class="store-modal-overlay" id="orderSuccessModal">
+        <div class="store-modal-card" style="max-width:480px;text-align:center;">
+            <div class="store-modal-body" style="padding:32px 24px;">
+                <div style="width:70px;height:70px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2.2rem;">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="font-size:1.4rem;font-weight:900;color:#0f172a;margin-bottom:6px;">تهانينا! تم تسجيل طلبك بنجاح</h3>
+                <div id="orderSuccessDetails"></div>
+                <button type="button" class="btn-pill" onclick="closeModal('orderSuccessModal')" style="margin-top:14px;padding:8px 24px;border:none;background:#f1f5f9;color:#475569;border-radius:20px;cursor:pointer;font-family:inherit;font-weight:700;">
+                    متابعة التسوق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         11. نافذة حساب الزبون (تسجيل الدخول / إنشاء حساب)
+         ============================================ -->
+    <div class="store-modal-overlay" id="authModal">
+        <div class="store-modal-card" style="max-width:440px;">
+            <div class="store-modal-header">
+                <h3 style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-user-circle" style="color:var(--brand-accent);"></i> حساب الزبون
+                </h3>
+                <button type="button" class="btn-drawer-close" onclick="closeModal('authModal')">&times;</button>
+            </div>
+            <div class="store-modal-body" style="padding:20px 24px;">
+                <div class="modal-nav-tabs">
+                    <button type="button" class="modal-tab-btn active" id="tabAuthLogin" onclick="switchAuthTab('login')">
+                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                    </button>
+                    <button type="button" class="modal-tab-btn" id="tabAuthRegister" onclick="switchAuthTab('register')">
+                        <i class="fas fa-user-plus"></i> إنشاء حساب جديد
+                    </button>
+                </div>
+
+                <!-- نموذج تسجيل الدخول -->
+                <form id="authLoginForm" onsubmit="loginCustomer(event)">
+                    <div class="form-field-group" style="margin-bottom:14px;">
+                        <label>رقم الهاتف أو الواتساب *</label>
+                        <input type="tel" id="loginPhone" placeholder="059xxxxxxx" style="direction:ltr;text-align:right;" required>
+                    </div>
+                    <div class="form-field-group" style="margin-bottom:18px;">
+                        <label>كلمة المرور *</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-checkout-drawer" style="width:100%;margin:0;padding:12px;font-size:0.95rem;">
+                        <i class="fas fa-sign-in-alt"></i> الدخول إلى حسابي
+                    </button>
+                    <div style="text-align:center;margin-top:14px;font-size:0.83rem;color:#64748b;">
+                        ليس لديك حساب حتى الآن؟ 
+                        <a href="javascript:void(0)" onclick="switchAuthTab('register')" style="color:var(--brand-accent);font-weight:700;">إنشاء حساب جديد</a>
+                    </div>
+                </form>
+
+                <!-- نموذج إنشاء حساب جديد -->
+                <form id="authRegisterForm" style="display:none;" onsubmit="registerCustomer(event)">
+                    <div class="form-field-group" style="margin-bottom:12px;">
+                        <label>الاسم الكامل *</label>
+                        <input type="text" id="regName" placeholder="مثال: محمد أحمد" required>
+                    </div>
+                    <div class="form-field-group" style="margin-bottom:12px;">
+                        <label>رقم الهاتف (الواتساب) *</label>
+                        <input type="tel" id="regPhone" placeholder="059xxxxxxx" style="direction:ltr;text-align:right;" required>
+                        <small style="color:#64748b;font-size:0.75rem;">ستصلك إشعارات وتحديثات طلباتك وموافقة الإدارة على هذا الرقم</small>
+                    </div>
+                    <div class="form-field-group" style="margin-bottom:12px;">
+                        <label>المدينة / المحافظة *</label>
+                        <select id="regCity" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:var(--radius-md);font-family:inherit;font-size:0.88rem;background:#fff;">
+                            <option value="">اختر مدينتك...</option>
+                            <option value="نابلس">نابلس</option>
+                            <option value="رام الله والبيرة">رام الله والبيرة</option>
+                            <option value="الخليل">الخليل</option>
+                            <option value="جنين">جنين</option>
+                            <option value="طولكرم">طولكرم</option>
+                            <option value="بيت لحم">بيت لحم</option>
+                            <option value="قلقيلية">قلقيلية</option>
+                            <option value="القدس وضواحيها">القدس وضواحيها</option>
+                            <option value="سلفيت">سلفيت</option>
+                            <option value="طوباس">طوباس</option>
+                            <option value="أريحا">أريحا</option>
+                            <option value="غزة والوسط والجنوب">غزة والوسط والجنوب</option>
+                            <option value="الداخل المحتل 48">الداخل المحتل 48</option>
+                        </select>
+                    </div>
+                    <div class="form-field-group" style="margin-bottom:12px;">
+                        <label>عنوان التوصيل بالتفصيل *</label>
+                        <input type="text" id="regAddress" placeholder="الشارع، الحي، قرب معلم بارز..." required>
+                    </div>
+                    <div class="form-field-group" style="margin-bottom:18px;">
+                        <label>كلمة المرور *</label>
+                        <input type="password" id="regPassword" placeholder="اختر كلمة مرور آمنة" required minlength="4">
+                    </div>
+                    <button type="submit" class="btn-checkout-drawer" style="width:100%;margin:0;padding:12px;font-size:0.95rem;">
+                        <i class="fas fa-user-check"></i> تأكيد إنشاء الحساب وبدء التسوق
+                    </button>
+                    <div style="text-align:center;margin-top:14px;font-size:0.83rem;color:#64748b;">
+                        لديك حساب بالفعل؟ 
+                        <a href="javascript:void(0)" onclick="switchAuthTab('login')" style="color:var(--brand-accent);font-weight:700;">تسجيل الدخول</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         12. بوابة ولوحة تحكم الزبون والإشعارات (Customer Portal)
+         ============================================ -->
+    <div class="store-modal-overlay" id="customerPortalModal">
+        <div class="store-modal-card" style="max-width:620px;">
+            <div class="store-modal-header">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--brand-accent-light);color:var(--brand-accent);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;" id="portalAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size:1.05rem;margin:0;" id="portalCustomerName">لوحة تحكم الزبون</h3>
+                        <small style="color:#64748b;" id="portalCustomerPhone">059xxxxxxx</small>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <button type="button" class="btn-pill" onclick="logoutCustomer()" title="تسجيل الخروج" style="padding:6px 14px;font-size:0.78rem;background:#fee2e2;color:#dc2626;border:none;border-radius:20px;cursor:pointer;font-family:inherit;font-weight:700;">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </button>
+                    <button type="button" class="btn-drawer-close" onclick="closeModal('customerPortalModal')">&times;</button>
+                </div>
+            </div>
+            <div class="store-modal-body" style="padding:16px 22px;">
+                <div class="modal-nav-tabs">
+                    <button type="button" class="modal-tab-btn active" id="tabPortalOrders" onclick="switchPortalTab('orders')">
+                        <i class="fas fa-box-open"></i> طلباتي (<span id="custOrdersCount">0</span>)
+                    </button>
+                    <button type="button" class="modal-tab-btn" id="tabPortalNotifs" onclick="switchPortalTab('notifs')">
+                        <i class="fas fa-bell"></i> الإشعارات (<span id="custNotifsCount">0</span>)
+                    </button>
+                    <button type="button" class="modal-tab-btn" id="tabPortalProfile" onclick="switchPortalTab('profile')">
+                        <i class="fas fa-id-card"></i> بياناتي وعنواني
+                    </button>
+                </div>
+
+                <!-- تبويب الطلبات -->
+                <div id="panePortalOrders">
+                    <div id="custOrdersList">
+                        <!-- ديناميكي -->
+                    </div>
+                </div>
+
+                <!-- تبويب الإشعارات -->
+                <div id="panePortalNotifs" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                        <span style="font-size:0.85rem;color:#64748b;">تنبيهات وموافقة الإدارة على طلباتك:</span>
+                        <button type="button" onclick="markAllNotificationsAsRead()" style="background:none;border:none;color:var(--brand-accent);font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit;">
+                            <i class="fas fa-check-double"></i> تحديد الكل كمقروء
+                        </button>
+                    </div>
+                    <div id="custNotifsList">
+                        <!-- ديناميكي -->
+                    </div>
+                </div>
+
+                <!-- تبويب الملف الشخصي والعنوان -->
+                <div id="panePortalProfile" style="display:none;">
+                    <form onsubmit="updateCustomerProfile(event)">
+                        <div class="form-field-group" style="margin-bottom:12px;">
+                            <label>الاسم الكامل *</label>
+                            <input type="text" id="profName" required>
+                        </div>
+                        <div class="form-field-group" style="margin-bottom:12px;">
+                            <label>رقم الهاتف (الواتساب) - رقم الحساب</label>
+                            <input type="tel" id="profPhone" readonly style="direction:ltr;text-align:right;background:#f8fafc;cursor:not-allowed;">
+                            <small style="color:#64748b;font-size:0.75rem;">رقم الحساب مرتبط بطلباتك وإشعاراتك ولا يمكن تغييره</small>
+                        </div>
+                        <div class="form-field-group" style="margin-bottom:12px;">
+                            <label>المدينة / المحافظة *</label>
+                            <input type="text" id="profCity" required>
+                        </div>
+                        <div class="form-field-group" style="margin-bottom:12px;">
+                            <label>عنوان التوصيل بالتفصيل *</label>
+                            <input type="text" id="profAddress" required>
+                        </div>
+                        <div class="form-field-group" style="margin-bottom:18px;">
+                            <label>كلمة المرور الجديدة (اتركها فارغة إذا لم ترد التغيير)</label>
+                            <input type="password" id="profPassword" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn-checkout-drawer" style="width:100%;margin:0;padding:12px;font-size:0.95rem;">
+                            <i class="fas fa-save"></i> حفظ التعديلات
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         13. الفوتر الفاخر (Storefront Footer)
+         ============================================ -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4 style="font-size:1.3rem;">متجر الأناقة للملابس</h4>
+                <p>
+                    وجهتكم الأولى للأزياء والملابس الشتوية والرياضية العصرية. نحرص على تقديم أفضل خامات الأقمشة مع دقة الخياطة والتفصيل وأفضل الأسعار لجميع أفراد العائلة.
+                </p>
+                <div style="display:flex;gap:12px;margin-top:18px;">
+                    <a href="https://wa.me/970599887766" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#1e293b;color:#25d366;display:flex;align-items:center;justify-content:center;font-size:1.1rem;text-decoration:none;">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="javascript:void(0)" style="width:36px;height:36px;border-radius:50%;background:#1e293b;color:#38bdf8;display:flex;align-items:center;justify-content:center;font-size:1.1rem;text-decoration:none;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="javascript:void(0)" style="width:36px;height:36px;border-radius:50%;background:#1e293b;color:#60a5fa;display:flex;align-items:center;justify-content:center;font-size:1.1rem;text-decoration:none;">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>أقسام المتجر</h4>
+                <ul class="footer-links-list">
+                    <li><a href="javascript:void(0)" onclick="setCategory('رجالي')">قسم الرجالي</a></li>
+                    <li><a href="javascript:void(0)" onclick="setCategory('ستاتي')">قسم الستاتي</a></li>
+                    <li><a href="javascript:void(0)" onclick="setCategory('أطفال')">قسم الأطفال</a></li>
+                    <li><a href="javascript:void(0)" onclick="setCategory('أحذية')">الأحذية والإكسسوارات</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>خدمة الزبائن</h4>
+                <ul class="footer-links-list">
+                    <li><a href="javascript:void(0)">سياسة الاستبدال والإرجاع</a></li>
+                    <li><a href="javascript:void(0)">الشحن والتوصيل السريع</a></li>
+                    <li><a href="javascript:void(0)">جدول المقاسات</a></li>
+                    <li><a href="javascript:void(0)">تتبع الطلب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>تواصل معنا</h4>
+                <p style="margin-bottom:8px;"><i class="fas fa-phone-alt text-muted" style="margin-left:6px;"></i> خدمة العملاء: 0599-887766</p>
+                <p style="margin-bottom:8px;"><i class="fas fa-map-marker-alt text-muted" style="margin-left:6px;"></i> المتجر الرئيسي - كافة المناطق</p>
+                <p><i class="fas fa-clock text-muted" style="margin-left:6px;"></i> أوقات العمل: يومياً 9:00 ص - 11:00 م</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>جميع الحقوق محفوظة © 2026 متجر الأناقة للملابس (EL-ANAQA STORE).</div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                <span>تصميم وتنفيذ متجر إلكتروني احترافي بالهوية البصرية الرسمية.</span>
+                <a href="../index.html" target="_blank" style="color:#64748b;font-size:0.75rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="تسجيل الدخول للنظام الإداري">
+                    <i class="fas fa-lock"></i> بوابة الإدارة
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- إشعار التوست العائم -->
+    <div id="storeToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#ffffff;padding:12px 24px;border-radius:30px;font-size:0.9rem;font-weight:700;box-shadow:0 8px 25px rgba(0,0,0,0.25);z-index:9999;transition:opacity 0.3s;pointer-events:none;">
+    </div>
+
+    <!-- سكربت المتجر التفاعلي -->
+    <script src="js/store.js"></script>
+</body>
+</html>
